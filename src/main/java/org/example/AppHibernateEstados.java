@@ -1,22 +1,16 @@
 package org.example;
 
-import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
-import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
 import java.util.Properties;
-import java.util.stream.Stream;
 
-public class AppHibernate {
+public class AppHibernateEstados {
     private static SessionFactory sessionFactory;
     private static SessionFactory sessionJavaConfigFactory;
 
@@ -29,28 +23,20 @@ public class AppHibernate {
 
         Transaction txn = session.beginTransaction();
 
-        //Query<Employee> query = session.createQuery("select distinct employee from EmployeeTask where deadline < CURDATE()", Employee.class);
-        String employeeName = "Empleado 973246";
-        Query<Employee> query = session.createQuery("from Employee where name = :employee_algo");
+        Employee employee;
 
-        query.setParameter("employee_algo", employeeName);
+        employee = session.find(Employee.class, 4);
 
-        ScrollableResults employeesScroll = query.scroll();
-        int count = 0;
 
-        while(employeesScroll.next()){
-            Employee employee = (Employee) employeesScroll.get()[0];
+        String name = employee.getName();
 
-            System.out.println(employee);
-            count++;
-        }
-
-        System.out.println("Fueron: " + count);
+        session.refresh(employee);
 
         txn.commit();
 
 
     }
+
 
     private static SessionFactory buildSessionFactory() {
         try {
@@ -64,8 +50,7 @@ public class AppHibernate {
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 
             return sessionFactory;
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             // Make sure you log the exception, as it might be swallowed
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
@@ -82,8 +67,9 @@ public class AppHibernate {
             props.put("hibernate.connection.url", "jdbc:mysql://127.0.0.1:3306/pruebas");
             props.put("hibernate.connection.username", "root");
             props.put("hibernate.connection.password", "Admin00");
+            props.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
             props.put("hibernate.current_session_context_class", "thread");
-            props.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+            props.put("hibernate.hbm2ddl.auto", "create");
             props.put("hibernate.show_sql", "true");
 
             configuration.setProperties(props);
@@ -97,8 +83,7 @@ public class AppHibernate {
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 
             return sessionFactory;
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }

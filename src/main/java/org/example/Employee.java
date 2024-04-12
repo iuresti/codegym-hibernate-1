@@ -7,11 +7,11 @@ import java.time.LocalDate;
 import java.util.StringJoiner;
 
 @Entity
-@Table(name = "employees")
+@Table(name = "employees5")
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String name;
     private String occupation;
     private BigDecimal salary;
@@ -50,11 +50,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
