@@ -1,25 +1,24 @@
-package org.example;
+package codegym.mod04.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "task1")
+@Table(name = "tasks")
 public class EmployeeTask {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String id;
     @ManyToOne
-    @JoinColumn(name="employee_id", nullable=true)
+    @JoinColumn(name = "employee_id", nullable = true)
     private Employee employee;
     private String name;
     private LocalDate deadline;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

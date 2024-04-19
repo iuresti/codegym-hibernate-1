@@ -1,28 +1,33 @@
-package org.example;
+package codegym.mod04.model;
 
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.StringJoiner;
 
 @Entity
-@Table(name = "employees5")
+@Table(name = "employees")
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String id;
     private String name;
     private String occupation;
     private BigDecimal salary;
     private Integer age;
     private LocalDate birthdate;
 
-    public int getId() {
+    @OneToMany
+    @JoinColumn(name = "employee_id")
+    private Set<EmployeeTask> tasks;
+
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
