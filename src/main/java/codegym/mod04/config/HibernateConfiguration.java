@@ -35,6 +35,7 @@ public class HibernateConfiguration {
             props.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL10Dialect");
             props.put("hibernate.show_sql", "true");
             props.put("hibernate.hbm2ddl.auto", "create");
+            props.put("hibernate.cache.use_query_cache", "true");
 
             configuration.setProperties(props);
 

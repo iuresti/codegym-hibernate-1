@@ -13,6 +13,38 @@ import java.util.UUID;
 
 public class EmployeeRepository {
 
+    public Employee getById(String employeeId1, String employeeId2){
+        SessionFactory sessionFactory = HibernateConfiguration.getSessionFactory();
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Transaction txn = session.beginTransaction();
+
+        Employee employee = session.find(Employee.class, employeeId1);
+        Employee employee2 = session.find(Employee.class, employeeId2);
+
+        Employee employee3 = session.find(Employee.class, employeeId1);
+        Employee employee4 = session.find(Employee.class, employeeId2);
+
+        txn.commit();
+
+        return employee;
+    }
+
+    public Employee getById(String employeeId){
+        SessionFactory sessionFactory = HibernateConfiguration.getSessionFactory();
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Transaction txn = session.beginTransaction();
+
+        Employee employee = session.find(Employee.class, employeeId);
+
+        txn.commit();
+
+        return employee;
+    }
+
     public Employee save(Employee employee) {
 
 
@@ -44,6 +76,8 @@ public class EmployeeRepository {
         String queryString = "from Employee where name = :empName ";
 
         Query<Employee> query = session.createQuery(queryString, Employee.class);
+
+        query.setCacheable(true);
 
         query.setParameter("empName", name);
 

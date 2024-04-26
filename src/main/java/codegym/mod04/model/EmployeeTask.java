@@ -2,6 +2,7 @@ package codegym.mod04.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.StringJoiner;
 
 @Entity
 @Table(name = "tasks")
@@ -44,5 +45,15 @@ public class EmployeeTask {
 
     public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", EmployeeTask.class.getSimpleName() + "[", "]")
+                .add("id='" + id + "'")
+                .add("employee=" + employee)
+                .add("name='" + name + "'")
+                .add("deadline=" + deadline)
+                .toString();
     }
 }

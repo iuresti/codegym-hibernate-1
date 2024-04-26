@@ -18,7 +18,7 @@ public class Employee {
     private Integer age;
     private LocalDate birthdate;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Set<EmployeeTask> tasks;
 
