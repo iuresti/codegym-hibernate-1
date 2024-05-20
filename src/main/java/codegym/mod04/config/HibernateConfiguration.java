@@ -2,6 +2,8 @@ package codegym.mod04.config;
 
 import codegym.mod04.model.Employee;
 import codegym.mod04.model.EmployeeTask;
+import codegym.mod04.model.Professor;
+import codegym.mod04.model.Student;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -13,8 +15,8 @@ public class HibernateConfiguration {
 
     private static SessionFactory sessionFactory;
 
-    public static SessionFactory getSessionFactory(){
-        if(sessionFactory == null){
+    public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
             buildSessionJavaConfigFactory();
         }
 
@@ -35,12 +37,15 @@ public class HibernateConfiguration {
             props.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL10Dialect");
             props.put("hibernate.show_sql", "true");
             props.put("hibernate.hbm2ddl.auto", "create");
-            props.put("hibernate.cache.use_query_cache", "true");
 
             configuration.setProperties(props);
 
             configuration.addAnnotatedClass(Employee.class);
             configuration.addAnnotatedClass(EmployeeTask.class);
+
+            //configuration.addAnnotatedClass(Person.class);
+            configuration.addAnnotatedClass(Professor.class);
+            configuration.addAnnotatedClass(Student.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
             System.out.println("Hibernate Java Config serviceRegistry created");

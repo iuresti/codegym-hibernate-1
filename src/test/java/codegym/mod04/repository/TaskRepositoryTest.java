@@ -38,6 +38,18 @@ class TaskRepositoryTest {
         insertedTasks.add(taskRepository.save(createTask(carlos, "Módulo 4 Lección 10", LocalDate.now().plusDays(3))));
         insertedTasks.add(taskRepository.save(createTask(carlos, "Levantar Startup", LocalDate.now().plusWeeks(5))));
 
+        employeeRepository.save(createEmployee("E1", "Programador", new BigDecimal(100000), 25, LocalDate.of(2003, Month.JULY, 11)));
+        employeeRepository.save(createEmployee("E2", "Tester automation", new BigDecimal(200000), 25, LocalDate.of(2003, Month.JULY, 11)));
+        employeeRepository.save(createEmployee("E3", "Programador", new BigDecimal(300000), 25, LocalDate.of(2003, Month.JULY, 11)));
+        employeeRepository.save(createEmployee("E4", "Manual Tester", new BigDecimal(400000), 25, LocalDate.of(2003, Month.JULY, 11)));
+        employeeRepository.save(createEmployee("E5", "Programador", new BigDecimal(60000), 25, LocalDate.of(2003, Month.JULY, 11)));
+        employeeRepository.save(createEmployee("E6", "Programador", new BigDecimal(50000), 25, LocalDate.of(2003, Month.JULY, 11)));
+        employeeRepository.save(createEmployee("E7", "Pen Tester", new BigDecimal(40000), 25, LocalDate.of(2003, Month.JULY, 11)));
+        employeeRepository.save(createEmployee("E8", "Programador", new BigDecimal(60000), 25, LocalDate.of(2003, Month.JULY, 11)));
+        employeeRepository.save(createEmployee("E9", "Programador", new BigDecimal(70000), 25, LocalDate.of(2003, Month.JULY, 11)));
+        employeeRepository.save(createEmployee("E10", "Programador", new BigDecimal(90000), 25, LocalDate.of(2003, Month.JULY, 11)));
+
+
     }
 
     private static EmployeeTask createTask(Employee employee, String name, LocalDate deadline) {
@@ -73,6 +85,7 @@ class TaskRepositoryTest {
 
     }
 
+
     @Test
     void getEmployeeById() {
         TaskRepository taskRepository = new TaskRepository();
@@ -90,6 +103,30 @@ class TaskRepositoryTest {
 
         System.out.println("Terminó");
 
+
+    }
+
+    @Test
+    void testSalary() {
+        EmployeeRepository employeeRepository = new EmployeeRepository();
+
+        List<Employee> employeesHQL = employeeRepository.getAllGreaterThanSalaryHQL(new BigDecimal("95000"));
+        List<Employee> employeesCriteria = employeeRepository.getAllGreaterThanSalaryCriteria(new BigDecimal("95000"));
+    }
+
+    @Test
+    void testBySalaryAndOccupation() {
+        EmployeeRepository employeeRepository = new EmployeeRepository();
+
+        List<Employee> employees = employeeRepository.getAllGreaterThanSalaryAndOccupation(new BigDecimal("95000"), "%Tester%");
+
+    }
+
+    @Test
+    void testAverageSalary() {
+        EmployeeRepository employeeRepository = new EmployeeRepository();
+
+        Double salary = employeeRepository.getAverageSalary();
 
     }
 

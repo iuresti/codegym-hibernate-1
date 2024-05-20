@@ -8,6 +8,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -86,5 +91,87 @@ public class EmployeeRepository {
         txn.commit();
 
         return list;
+    }
+
+    public List<Employee> getAllGreaterThanSalaryHQL(BigDecimal salary) {
+        SessionFactory sessionFactory = HibernateConfiguration.getSessionFactory();
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Transaction txn = session.beginTransaction();
+
+        String queryString = "from Employee where salary > :salary ";
+
+        Query<Employee> query = session.createQuery(queryString, Employee.class);
+
+        query.setParameter("salary", salary);
+
+        List<Employee> list = query.list();
+
+        txn.commit();
+
+        return list;
+    }
+
+    public List<Employee> getAllGreaterThanSalaryCriteria(BigDecimal salary) {
+        SessionFactory sessionFactory = HibernateConfiguration.getSessionFactory();
+        Session session = sessionFactory.getCurrentSession();
+        Transaction txn = session.beginTransaction();
+
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Employee> criteriaQuery = criteriaBuilder.createQuery(Employee.class);
+        Root<Employee> root = criteriaQuery.from(Employee.class);
+        criteriaQuery.select(root).where(criteriaBuilder.gt(root.get("salary"), salary));
+
+        Query<Employee> query = session.createQuery(criteriaQuery);
+
+        List<Employee> list = query.list();
+
+        txn.commit();
+
+        return list;
+    }
+
+    public List<Employee> getAllGreaterThanSalaryAndOccupation(BigDecimal salary, String occupation) {
+        SessionFactory sessionFactory = HibernateConfiguration.getSessionFactory();
+        Session session = sessionFactory.getCurrentSession();
+        Transaction txn = session.beginTransaction();
+
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Employee> criteriaQuery = criteriaBuilder.createQuery(Employee.class);
+        Root<Employee> root = criteriaQuery.from(Employee.class);
+
+        Predicate predicateSalary = criteriaBuilder.gt(root.get("salary"), salary);
+        Predicate predicateOccupation = criteriaBuilder.like(root.get("occupation"), occupation);
+
+        criteriaQuery.select(root).where(criteriaBuilder.and(predicateSalary, predicateOccupation));
+
+        Query<Employee> query = session.createQuery(criteriaQuery);
+
+        List<Employee> list = query.list();
+
+        txn.commit();
+
+        return list;
+    }
+
+    public Double getAverageSalary() {
+        SessionFactory sessionFactory = HibernateConfiguration.getSessionFactory();
+        Session session = sessionFactory.getCurrentSession();
+        Transaction txn = session.beginTransaction();
+
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Double> criteriaQuery = criteriaBuilder.createQuery(Double.class);
+        Root<Employee> root = criteriaQuery.from(Employee.class);
+
+        criteriaQuery.select(criteriaBuilder.avg(root.get("salary")));
+
+        Query<Double> query = session.createQuery(criteriaQuery);
+
+        Double averageSalary = query.uniqueResult();
+
+        txn.commit();
+
+        return averageSalary;
     }
 }
