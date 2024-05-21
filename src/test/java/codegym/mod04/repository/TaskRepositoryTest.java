@@ -137,7 +137,6 @@ class TaskRepositoryTest {
         employee.setOccupation(ocuppation);
         employee.setSalary(salary);
         employee.setBirthdate(birthday);
-        employee.setAge(40);
 
         return employee;
     }

@@ -1,11 +1,16 @@
 package codegym.mod04.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.StringJoiner;
 
 @Entity
 @Table(name = "tasks")
+@Getter
+@Setter
 public class EmployeeTask {
     @Id
     private String id;
@@ -15,37 +20,6 @@ public class EmployeeTask {
     private String name;
     private LocalDate deadline;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDate getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(LocalDate deadline) {
-        this.deadline = deadline;
-    }
 
     @Override
     public String toString() {
